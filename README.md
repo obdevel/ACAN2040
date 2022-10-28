@@ -1,8 +1,10 @@
 
-# Arduino library that wraps the can2040 CAN driver for RP2040
+# ACAN2040
 
-A wrapper for Kevin O'Connor's CAN driver using the PIO of the RP2040 microcontroller
+An Arduino wrapper library for Kevin O'Connor's CAN driver using the PIO of the RP2040 microcontroller
 (https://github.com/KevinOConnor/can2040)
+
+For the arduino-pico core (https://github.com/earlephilhower/arduino-pico)
 
 ## Hardware
 
@@ -10,8 +12,8 @@ Raspberry Pi Pico and Pico W (or similar) with attached CAN transceiver (e.g. MC
 
 ## Documentation
 
-See the example sketch and documentation file
+See the example sketch
 
 ## License
 
-Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+GPL-3.0
