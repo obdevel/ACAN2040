@@ -1,21 +1,12 @@
-<img align="right" src="arduino_cbus_logo.png"  width="150" height="75">
 
-# Arduino library for MERG CBUS running over CAN bus
+# Arduino library that wraps the can2040 CAN driver for RP2040
 
-A library that implements the abstract CBUS base class. It contains methods to support the MCP2515/25625 CAN controller IC
-
-Note that this library depends on a number of other libraries which must also be downloaded and included in the sketch:
-
-CBUS 			- abstract CBUS base class
-ACAN2040		- driver for a CAN controller using the RP2040's PIO
-CBUSswitch
-CBUSLED
-CBUSconfig
-Streaming		- C++ style output
+A wrapper for Kevin O'Connor's CAN driver using the PIO of the RP2040 microcontroller
+(https://github.com/KevinOConnor/can2040)
 
 ## Hardware
 
-Raspberry Pi Pico and Pico W
+Raspberry Pi Pico and Pico W (or similar) with attached CAN transceiver (e.g. MCP2562, SN65HVD230)
 
 ## Documentation
 
