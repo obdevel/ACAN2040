@@ -1,4 +1,4 @@
-// Pico CAN test
+// Pico can2004 CAN test
 
 #include <ACAN2040.h>
 
@@ -9,22 +9,25 @@ const uint8_t RXPIN = 2;
 const uint32_t BITRATE = 125000UL;
 const uint32_t SYSCLK = F_CPU;
 
-// forward function definitions
+// forward function declarations
 void my_cb(struct can2040 *cd, uint32_t notify, struct can2040_msg *msg);
 char *msg_to_str(struct can2040_msg *msg);
 
 // global variables
 ACAN2040 can2040(PIONUM, TXPIN, RXPIN, BITRATE, SYSCLK, my_cb);
-volatile bool cb_called = false, got_msg = false, msg_sent_ok = false, got_error = false, unknown_cb = false;
+volatile bool cb_called = false;
+volatile uint32_t cb_notify;
 struct can2040_msg tx_msg, rx_msg;
 
 ///
 
 void setup() {
 
+  uint32_t stimer = millis();
+
   Serial.begin(115200);
-  while (!Serial);
-  Serial.printf("\n\nACAN2040 test, bitrate = %lu kbps, syscl = %lu mhz\n", BITRATE, SYSCLK);
+  while (!Serial && millis() - stimer < 5000UL);
+  Serial.printf("\n\nACAN2040 test, bitrate = %lu kbps, sysclk = %lu mhz, tx = %u, rx = %u\n", BITRATE, SYSCLK, TXPIN, RXPIN);
 
   // create a test message
   tx_msg.id = 12345;
@@ -47,31 +50,29 @@ void loop() {
 
   // callback called
   if (cb_called) {
+
     cb_called = false;
     Serial.printf("callback called\n");
 
-    // received message
-    if (got_msg) {
-      got_msg = false;
-      Serial.printf("cb: received msg: %s\n", msg_to_str(&rx_msg));
-    }
+    switch (cb_notify) {
+      // received message
+      case CAN2040_NOTIFY_RX:
+        Serial.printf("cb: received msg: %s\n", msg_to_str(&rx_msg));
+        break;
 
-    // message sent ok
-    if (msg_sent_ok) {
-      msg_sent_ok = false;
-      Serial.printf("cb: message sent ok\n");
-    }
+      // message sent ok
+      case CAN2040_NOTIFY_TX:
+        Serial.printf("cb: message sent ok\n");
+        break;
 
-    // error
-    if (got_error) {
-      got_error = false;
-      Serial.printf("cb: an error occurred\n");
-    }
+      // error
+      case CAN2040_NOTIFY_ERROR:
+        Serial.printf("cb: an error occurred\n");
+        break;
 
-    // unknown
-    if (unknown_cb) {
-      unknown_cb = false;
-      Serial.printf("cb: unknown notification\n");
+      // unknown
+      default:
+        Serial.printf("cb: unknown notification = %lu\n", cb_notify);
     }
   }
 
@@ -96,27 +97,16 @@ void loop() {
 
 }
 
-/// notify callback - runs in interrupt context so must be very short !
+/// notify callback - runs in interrupt context so must be as short as possible !!
 
 void my_cb(struct can2040 *cd, uint32_t notify, struct can2040_msg *msg) {
 
   (void)(cd);
   cb_called = true;
+  cb_notify = notify;
 
-  switch (notify) {
-    case CAN2040_NOTIFY_RX:
-      rx_msg = *msg;
-      got_msg = true;
-      break;
-    case CAN2040_NOTIFY_TX:
-      msg_sent_ok = true;
-      break;
-    case CAN2040_NOTIFY_ERROR:
-      got_error = true;
-      break;
-    default:
-      unknown_cb = true;
-      break;
+  if (notify == CAN2040_NOTIFY_RX) {
+    rx_msg = *msg;
   }
 
   return;
