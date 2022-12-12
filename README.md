@@ -10,6 +10,10 @@ For the arduino-pico core (https://github.com/earlephilhower/arduino-pico)
 
 Raspberry Pi Pico and Pico W (or similar) with attached CAN transceiver (e.g. MCP2562, SN65HVD230)
 
+## Limitations
+
+Currently supports only one of the two possible controller instances.
+
 ## Documentation
 
 See the example sketch
