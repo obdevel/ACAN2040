@@ -1,6 +1,9 @@
-// Pico can2004 CAN test
 
-#include <ACAN2040.h>
+//
+// Pico can2040 CAN test sketch
+//
+
+#include "ACAN2040.h"
 
 // constants
 const uint8_t PIONUM = 0;
