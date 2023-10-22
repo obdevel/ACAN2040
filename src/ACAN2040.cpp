@@ -46,3 +46,12 @@ bool ACAN2040::ok_to_send(void) {
 	return can2040_check_transmit(&_cbus);
 }
 
+void ACAN2040::stop(void) {
+	can2040_stop(_cbusp);
+}
+
+void ACAN2040::get_statistics(struct can2040_stats *can_stats) {
+
+	can2040_get_statistics(_cbusp, can_stats);
+	return;
+}

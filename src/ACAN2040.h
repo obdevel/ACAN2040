@@ -14,8 +14,9 @@
 #include <hardware/irq.h>
 
 // can2040 header
-#include "can2040.h"
-
+extern "C" {
+  #include "can2040.h"
+}
 
 /// Arduino library class that wraps the acan2040 Kevin's code
 
@@ -24,14 +25,16 @@ class ACAN2040 {
 public:
 	ACAN2040(uint32_t pio_num, uint32_t gpio_tx, uint32_t gpio_rx, uint32_t bitrate, uint32_t sys_clock, void (*callback)(struct can2040 *cd, uint32_t notify, struct can2040_msg *msg));
 	void begin();
+	void stop();
 	bool send_message(struct can2040_msg *msg);
 	bool ok_to_send(void);
+	void get_statistics(struct can2040_stats *can_stats);
 
 private:
-	uint32_t _pio_num;
-	uint32_t _bitrate;
-	uint32_t _gpio_tx, _gpio_rx;
-	uint32_t _sys_clock;
-	struct can2040 _cbus;
-	void (*_callback)(struct can2040 *cd, uint32_t notify, struct can2040_msg *msg);
-};
+		uint32_t _pio_num;
+		uint32_t _bitrate;
+		uint32_t _gpio_tx, _gpio_rx;
+		uint32_t _sys_clock;
+		struct can2040 _cbus;
+		void (*_callback)(struct can2040 * cd, uint32_t notify, struct can2040_msg * msg);
+	};
