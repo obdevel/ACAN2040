@@ -2,7 +2,12 @@
 #pragma once
 
 // Pico SDK headers - supplied with arduino-pico core
-#include "RP2040.h" // hw_set_bits
+#if PICO_RP2350
+#include "RP2350.h" // hw_set_bits
+#else
+#include "RP2040.h"
+#endif
+
 #include "hardware/regs/dreq.h" // DREQ_PIO0_RX1
 #include "hardware/structs/dma.h" // dma_hw
 #include "hardware/structs/iobank0.h" // iobank0_hw
