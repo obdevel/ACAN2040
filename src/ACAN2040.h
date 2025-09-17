@@ -1,7 +1,8 @@
 
 #pragma once
 
-// Pico SDK headers - supplied with arduino-pico core
+/// Pico SDK headers - supplied with arduino-pico core
+
 #if PICO_RP2350
 #include "RP2350.h" // hw_set_bits
 #else
@@ -15,15 +16,17 @@
 #include "hardware/structs/pio.h" // pio0_hw
 #include "hardware/structs/resets.h" // RESETS_RESET_PIO0_BITS
 
-// additional SDK header required for successful compilation
+/// additional SDK header required for successful compilation
+
 #include <hardware/irq.h>
 
-// can2040 header
+/// can2040 header
+
 extern "C" {
-  #include "can2040.h"
+#include "can2040.h"
 }
 
-/// Arduino library class that wraps the acan2040 Kevin's code
+/// C++ class that wraps Kevin's can2040 code
 
 class ACAN2040 {
 
@@ -36,10 +39,10 @@ public:
 	void get_statistics(struct can2040_stats *can_stats);
 
 private:
-		uint32_t _pio_num;
-		uint32_t _bitrate;
-		uint32_t _gpio_tx, _gpio_rx;
-		uint32_t _sys_clock;
-		struct can2040 _cbus;
-		void (*_callback)(struct can2040 * cd, uint32_t notify, struct can2040_msg * msg);
-	};
+	uint32_t _pio_num;
+	uint32_t _gpio_tx, _gpio_rx;
+	uint32_t _bitrate;
+	uint32_t _sys_clock;
+	void (*_callback)(struct can2040 *cd, uint32_t notify, struct can2040_msg *msg);
+	struct can2040 *_cbus;
+};
