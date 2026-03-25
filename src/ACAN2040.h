@@ -44,5 +44,4 @@ private:
 	uint32_t _bitrate;
 	uint32_t _sys_clock;
 	void (*_callback)(struct can2040 *cd, uint32_t notify, struct can2040_msg *msg);
-	struct can2040 *_cbus;
 };
