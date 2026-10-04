@@ -1,0 +1,47 @@
+name: Arduino Firmware Build
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+on:
+  pull_request:
+    paths:
+      - examples/**
+      - src/**
+      - library.properties
+      - .github/workflows/ci-arduino-build.yml
+  push:
+    paths:
+      - examples/**
+      - src/**
+      - library.properties
+      - .github/workflows/ci-arduino-build.yml
+  workflow_dispatch:
+
+jobs:
+  compile-examples:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Set up Arduino CLI
+        uses: arduino/setup-arduino-cli@v2
+
+      - name: Install Arduino core
+        run: |
+          arduino-cli core update-index
+          arduino-cli core install rp2040:rp2040 --additional-urls https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
+
+      - name: Compile all examples for RP2040 and RP2350
+        run: |
+          fqbns="rp2040:rp2040:rpipico rp2040:rp2040:rpipico2"
+          for dir in ./examples/*; do
+            if [ -d "$dir" ] && ls "$dir"/*.ino >/dev/null 2>&1; then
+              for fqbn in $fqbns; do
+                echo "Compiling $fqbn: $dir"
+                arduino-cli compile --fqbn "$fqbn" --library . "$dir"
+              done
+            fi
+          done
