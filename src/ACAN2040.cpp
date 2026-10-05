@@ -47,13 +47,13 @@ void ACAN2040::begin() {
 	switch (_pio_num) {
 
 	case 0:
-		irq_set_exclusive_handler(PIO0_IRQ_0_IRQn, PIO0_IRQHandler);
+		irq_set_exclusive_handler(PIO0_IRQ_0, PIO0_IRQHandler);
 		irq_set_priority(PIO0_IRQ_0, 1);
 		irq_set_enabled(PIO0_IRQ_0, 1);
 		break;
 
 	case 1:
-		irq_set_exclusive_handler(PIO1_IRQ_0_IRQn, PIO1_IRQHandler);
+		irq_set_exclusive_handler(PIO1_IRQ_0, PIO1_IRQHandler);
 		irq_set_priority(PIO1_IRQ_0, 1);
 		irq_set_enabled(PIO1_IRQ_0, 1);
 		break;
@@ -62,7 +62,7 @@ void ACAN2040::begin() {
 	case 2:
 		irq_set_priority(PIO2_IRQ_0, 1);
 		irq_set_enabled(PIO2_IRQ_0, 1);
-		irq_set_exclusive_handler(PIO2_IRQ_0_IRQn, PIO2_IRQHandler);
+		irq_set_exclusive_handler(PIO2_IRQ_0, PIO2_IRQHandler);
 		break;
 #endif
 	}
