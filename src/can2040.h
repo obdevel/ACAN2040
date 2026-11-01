@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef _CAN2040_H
 #define _CAN2040_H
 
@@ -15,14 +13,14 @@ struct can2040_msg {
 };
 
 enum {
-    CAN2040_ID_RTR = 1 << 30,
-    CAN2040_ID_EFF = 1 << 31,
+    CAN2040_ID_RTR = 1<<30,
+    CAN2040_ID_EFF = 1<<31,
 };
 
 enum {
-    CAN2040_NOTIFY_RX = 1 << 20,
-    CAN2040_NOTIFY_TX = 1 << 21,
-    CAN2040_NOTIFY_ERROR = 1 << 23,
+    CAN2040_NOTIFY_RX = 1<<20,
+    CAN2040_NOTIFY_TX = 1<<21,
+    CAN2040_NOTIFY_ERROR = 1<<23,
 };
 struct can2040;
 typedef void (*can2040_rx_cb)(struct can2040 *cd, uint32_t notify
@@ -37,7 +35,7 @@ struct can2040_stats {
 void can2040_setup(struct can2040 *cd, uint32_t pio_num);
 void can2040_callback_config(struct can2040 *cd, can2040_rx_cb rx_cb);
 void can2040_start(struct can2040 *cd, uint32_t sys_clock, uint32_t bitrate
-                   , uint32_t gpio_rx, uint32_t gpio_tx);
+                   , int32_t gpio_rx, int32_t gpio_tx);
 void can2040_stop(struct can2040 *cd);
 void can2040_get_statistics(struct can2040 *cd, struct can2040_stats *stats);
 void can2040_pio_irq_handler(struct can2040 *cd);
@@ -63,7 +61,7 @@ struct can2040 {
     // Setup
     uint32_t pio_num;
     void *pio_hw;
-    uint32_t gpio_rx, gpio_tx;
+    int32_t gpio_rx, gpio_tx;
     can2040_rx_cb rx_cb;
     struct can2040_stats stats;
 

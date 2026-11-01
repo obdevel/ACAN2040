@@ -33,6 +33,8 @@ public:
 	bool ok_to_send(void);
 	void get_statistics(struct can2040_stats *can_stats);
 
+	bool isRP2350(void);
+
 private:
 	uint32_t _pio_num;
 	uint32_t _gpio_tx, _gpio_rx;

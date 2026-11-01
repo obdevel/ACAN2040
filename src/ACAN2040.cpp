@@ -58,11 +58,11 @@ void ACAN2040::begin() {
 		irq_set_enabled(PIO1_IRQ_0, 1);
 		break;
 
-#if PICO_RP2350
+#ifdef PICO_RP2350
 	case 2:
+		irq_set_exclusive_handler(PIO2_IRQ_0, PIO2_IRQHandler);
 		irq_set_priority(PIO2_IRQ_0, 1);
 		irq_set_enabled(PIO2_IRQ_0, 1);
-		irq_set_exclusive_handler(PIO2_IRQ_0, PIO2_IRQHandler);
 		break;
 #endif
 	}
@@ -106,3 +106,13 @@ void ACAN2040::get_statistics(struct can2040_stats *can_stats) {
 
 ///
 
+bool ACAN2040::isRP2350(void) {
+
+#ifdef PICO_RP2350
+	return true;
+#else
+	return false;
+#endif
+}
+
+///
